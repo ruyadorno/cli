@@ -26,4 +26,5 @@
 - Special label when using git `npa` type
 - Signal `INVALID` `MISSING` `PEERINVALID` `EXTRANEOUS` packages
 - `ENOTDIR` error if not in a valid location
+- Print `problems` in json output
 
