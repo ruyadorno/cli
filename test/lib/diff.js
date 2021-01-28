@@ -309,7 +309,7 @@ t.test('single arg', t => {
         return { version: '1.8.10' }
       },
       libnpmdiff: async ([a, b], opts) => {
-        t.equal(a, 'bar@1.0.0', 'should have current spec')
+        t.equal(a, `bar@file:${resolve(path, 'node_modules/bar')}`, 'should target local node_modules pkg')
         t.equal(b, 'bar@1.8.10', 'should have possible semver range spec')
       },
     })
@@ -371,7 +371,7 @@ t.test('single arg', t => {
         return { version: '2.1.0' }
       },
       libnpmdiff: async ([a, b], opts) => {
-        t.equal(a, 'lorem@2.0.0', 'should have current spec')
+        t.equal(a, `lorem@file:${resolve(path, 'globalDir/lib/node_modules/lorem')}`, 'should target local node_modules pkg')
         t.equal(b, 'lorem@2.1.0', 'should have possible semver range spec')
       },
     })
@@ -403,7 +403,7 @@ t.test('single arg', t => {
     })
 
     libnpmdiff = async ([a, b], opts) => {
-      t.equal(a, 'bar@1.0.0', 'should have current spec')
+      t.equal(a, `bar@file:${resolve(path, 'node_modules/bar')}`, 'should target local node_modules pkg')
       t.equal(b, 'bar@2.0.0', 'should have expected comparison spec')
     }
 
@@ -458,7 +458,7 @@ t.test('single arg', t => {
         return { version: '2.2.2' }
       },
       libnpmdiff: async ([a, b], opts) => {
-        t.equal(a, 'lorem@2.0.0', 'should have current spec')
+        t.equal(a, `lorem@file:${resolve(path, 'node_modules/lorem')}`, 'should target local node_modules pkg')
         t.equal(b, 'lorem@2.2.2', 'should have expected target spec')
       },
     })
@@ -617,7 +617,7 @@ t.test('first arg is a qualified spec', t => {
     rlp = async () => 'my-project'
     libnpmdiff = async ([a, b], opts) => {
       t.equal(a, 'bar@2.0.0', 'should set expected first spec')
-      t.equal(b, 'bar@1.0.0', 'should set expected second spec from nm')
+      t.equal(b, `bar@file:${resolve(path, 'node_modules/bar')}`, 'should target local node_modules pkg')
     }
 
     npm.flatOptions.prefix = path
@@ -685,7 +685,7 @@ t.test('first arg is a known dependency name', t => {
 
     rlp = async () => 'my-project'
     libnpmdiff = async ([a, b], opts) => {
-      t.equal(a, 'bar@1.0.0', 'should set expected first spec from nm')
+      t.equal(a, `bar@file:${resolve(path, 'node_modules/bar')}`, 'should target local node_modules pkg')
       t.equal(b, 'bar@2.0.0', 'should set expected second spec')
     }
 
@@ -725,8 +725,8 @@ t.test('first arg is a known dependency name', t => {
 
     rlp = async () => 'my-project'
     libnpmdiff = async ([a, b], opts) => {
-      t.equal(a, 'bar@1.0.0', 'should set expected first spec from nm')
-      t.equal(b, 'bar-fork@1.0.0', 'should set expected second spec from nm')
+      t.equal(a, `bar@file:${resolve(path, 'node_modules/bar')}`, 'should target local node_modules pkg')
+      t.equal(b, `bar-fork@file:${resolve(path, 'node_modules/bar-fork')}`, 'should target fork local node_modules pkg')
     }
 
     npm.flatOptions.prefix = path
@@ -759,7 +759,7 @@ t.test('first arg is a known dependency name', t => {
 
     rlp = async () => 'my-project'
     libnpmdiff = async ([a, b], opts) => {
-      t.equal(a, 'bar@1.0.0', 'should set expected first spec from nm')
+      t.equal(a, `bar@file:${resolve(path, 'node_modules/bar')}`, 'should target local node_modules pkg')
       t.equal(b, 'bar@2.0.0', 'should use package name from first arg')
     }
 
@@ -793,7 +793,7 @@ t.test('first arg is a known dependency name', t => {
 
     rlp = async () => 'my-project'
     libnpmdiff = async ([a, b], opts) => {
-      t.equal(a, 'bar@1.0.0', 'should set expected first spec from nm')
+      t.equal(a, `bar@file:${resolve(path, 'node_modules/bar')}`, 'should target local node_modules pkg')
       t.equal(b, 'bar-fork@latest', 'should set expected second spec')
     }
 
@@ -848,7 +848,7 @@ t.test('first arg is a valid semver range', t => {
     rlp = async () => 'my-project'
     libnpmdiff = async ([a, b], opts) => {
       t.equal(a, 'bar@1.0.0', 'should use name from second arg')
-      t.equal(b, 'bar@2.0.0', 'should set expected second spec from nm')
+      t.equal(b, `bar@file:${resolve(path, 'node_modules/bar')}`, 'should set expected second spec from nm')
     }
 
     npm.flatOptions.prefix = path
@@ -984,7 +984,7 @@ t.test('first arg is an unknown dependency name', t => {
     rlp = async () => 'my-project'
     libnpmdiff = async ([a, b], opts) => {
       t.equal(a, 'bar-fork@latest', 'should use latest tag')
-      t.equal(b, 'bar@2.0.0', 'should set expected second spec from nm')
+      t.equal(b, `bar@file:${resolve(path, 'node_modules/bar')}`, 'should target local node_modules pkg')
     }
 
     npm.flatOptions.prefix = path
