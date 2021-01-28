@@ -7,7 +7,7 @@ let libnpmdiff = noop
 let rlp = () => 'foo'
 const defaultFlatOptions = {
   defaultTag: 'latest',
-  diff: null,
+  diff: [],
   diffUnified: null,
   diffIgnoreAllSpace: false,
   diffNoPrefix: false,
@@ -25,7 +25,7 @@ const npm = {
   },
 }
 const mocks = {
-  npmlog: { info: noop },
+  npmlog: { info: noop, verbose: noop },
   libnpmdiff: (...args) => libnpmdiff(...args),
   'npm-registry-fetch': async () => ({}),
   '../../lib/npm.js': npm,
@@ -472,6 +472,38 @@ t.test('single arg', t => {
     })
   })
 
+  t.test('missing actual tree', t => {
+    t.plan(2)
+
+    const path = t.testdir({
+      'package.json': JSON.stringify({
+        name: 'my-project',
+      }),
+    })
+
+    const diff = requireInject('../../lib/diff.js', {
+      ...mocks,
+      '../../lib/utils/read-local-package.js': async () => 'my-project',
+      '@npmcli/arborist': class {
+        constructor () {
+          throw new Error('ERR')
+        }
+      },
+      libnpmdiff: async ([a, b], opts) => {
+        t.equal(a, 'lorem@latest', 'should target latest version of pkg name')
+        t.equal(b, `file:${path}`, 'should target current cwd')
+      },
+    })
+
+    npm.flatOptions.diff = ['lorem']
+    npm.flatOptions.prefix = path
+
+    diff([], err => {
+      if (err)
+        throw err
+    })
+  })
+
   t.test('unknown package name', t => {
     t.plan(2)
 
@@ -871,6 +903,38 @@ t.test('first arg is a valid semver range', t => {
     }
 
     npm.flatOptions.diff = ['1.0.0', 'bar']
+    diff([], err => {
+      if (err)
+        throw err
+    })
+  })
+
+  t.test('second arg is a qualified spec, missing actual tree', t => {
+    t.plan(2)
+
+    const path = t.testdir({
+      'package.json': JSON.stringify({
+        name: 'my-project',
+      }),
+    })
+
+    const diff = requireInject('../../lib/diff.js', {
+      ...mocks,
+      '../../lib/utils/read-local-package.js': async () => 'my-project',
+      '@npmcli/arborist': class {
+        constructor () {
+          throw new Error('ERR')
+        }
+      },
+      libnpmdiff: async ([a, b], opts) => {
+        t.equal(a, 'lorem@1.0.0', 'should target latest version of pkg name')
+        t.equal(b, 'lorem@2.0.0', 'should target expected spec')
+      },
+    })
+
+    npm.flatOptions.diff = ['1.0.0', 'lorem@2.0.0']
+    npm.flatOptions.prefix = path
+
     diff([], err => {
       if (err)
         throw err

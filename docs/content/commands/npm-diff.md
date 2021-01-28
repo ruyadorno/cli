@@ -7,10 +7,11 @@ description: The registry diff command
 ### Synopsis
 
 ```bash
-npm diff
-npm diff --diff=<pkg-name>
-npm diff --diff=<version-a> [--diff=<version-b>]
-npm diff --diff=<spec-a> [--diff=<spec-b>]
+npm diff [...<paths>]
+npm diff --diff=<pkg-name> [...<paths>]
+npm diff --diff=<version-a> [--diff=<version-b>] [...<paths>]
+npm diff --diff=<spec-a> [--diff=<spec-b>] [...<paths>]
+npm diff [--diff-ignore-all-space] [--diff-name-only] [...<paths>]
 ```
 
 ### Description
@@ -154,10 +155,12 @@ located within the folder `./lib/` and changed lines of code within the
 
 #### diff
 
-* Type: String, Array, null
+* Type: Array<String>
 * Default: null
 
-Defines up to two npm valid package specifiers in which to compare.
+Defines npm package specifiers to compare using the `npm diff` command.
+
+This can be specified up to 2 times.
 
 #### diff-name-only
 
@@ -169,7 +172,7 @@ have any difference.
 
 #### diff-unified
 
-* Type: number
+* Type: Number
 * Default: `3`
 
 The number of lines of context to print in the unified diff format output.

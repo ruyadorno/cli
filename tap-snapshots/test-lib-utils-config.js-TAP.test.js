@@ -37,7 +37,7 @@ Object {
     "depth": null,
     "description": true,
     "dev": false,
-    "diff": null,
+    "diff": Array [],
     "diff-dst-prefix": "",
     "diff-ignore-all-space": false,
     "diff-name-only": false,
@@ -355,7 +355,6 @@ Object {
     "description": "{Boolean TYPE}",
     "dev": "{Boolean TYPE}",
     "diff": Array [
-      null,
       "{String TYPE}",
       "{Array TYPE}",
     ],
@@ -589,7 +588,7 @@ Object {
     "depth": null,
     "description": true,
     "dev": false,
-    "diff": null,
+    "diff": Array [],
     "diff-dst-prefix": "",
     "diff-ignore-all-space": false,
     "diff-name-only": false,
@@ -907,7 +906,6 @@ Object {
     "description": "{Boolean TYPE}",
     "dev": "{Boolean TYPE}",
     "diff": Array [
-      null,
       "{String TYPE}",
       "{Array TYPE}",
     ],
