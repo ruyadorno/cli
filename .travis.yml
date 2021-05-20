@@ -1,0 +1,21 @@
+# need to declare the language as well as the matrix below
+language: node_js
+
+os:
+  - linux
+  - windows
+
+node_js:
+  - 16
+  - 14
+  - 12
+  - 10
+
+env: "DEPLOY_VERSION=testing"
+
+install:
+  - "node . install"
+
+script:
+  - "node . run --ignore-scripts test -- -t600 -Rbase -c"
+  - "node . run --ignore-scripts smoke-tests -- --no-check-coverage -t600 -Rbase -c"
